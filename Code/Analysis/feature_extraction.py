@@ -20,7 +20,7 @@ try:
 except LookupError:
     nltk.download('omw-1.4')
 
-df = pd.read_csv('final_cleaned.csv')
+df = pd.read_csv('Data/Final/final_cleaned.csv')
 
 print(f"Initial shape: {df.shape}")
 
@@ -148,11 +148,10 @@ df = pd.concat([df.reset_index(drop=True), tfidf_df], axis=1)
 print("TF-IDF features extracted")
 if 'review_year' in df.columns:
     df['review_year'] = pd.to_numeric(df['review_year'], errors='coerce')
-    # Reviews per year for each company
     year_counts = df.groupby(['company', 'review_year']).size().reset_index(name='reviews_per_year')
     df = df.merge(year_counts, on=['company', 'review_year'], how='left')
-    print("✓ Temporal features extracted")
-df.to_csv('data_with_features.csv', index=False)
+    print("Temporal features extracted")
+df.to_csv('Data/Final/data_with_features.csv', index=False)
 
 print(f"Feature extraction complete!")
 print(f"Final shape: {df.shape}")
